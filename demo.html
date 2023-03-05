@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="student-id" content="9967819">
+<meta name="author" content="Etienne Robillard">
+<meta name="author-email" content="9967819@cstj.qc.ca">
+<meta name="organization" content="Cégep Saint-Jérôme">
+
+
+<title>Démo Chat.io (UI: Bootstrap 5.2.3)</title>
+<!-- Bootstrap CSS -->
+<link href=" https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+
+</head>
+<style>
+body {
+  font-family: Roboto, sans-serif;
+}
+
+.bg-selected {
+  background-color: #eee
+}
+.dark {
+  --text: #ddd;
+  color-scheme: dark;
+  background-image: url('images/backgrounds/bg1.jpg');
+  background-size: cover;
+}
+.light {
+  background-image: url('images/backgrounds/bg2.jpg');  
+  background-size: cover; 
+  color-scheme: light;
+}
+main {
+  color-scheme: light dark;
+}
+section#content {
+  background-color: rgba(237, 237, 237, 0.5)
+}
+#navtest  {
+  background: rgba(255, 255, 255, 0.65);
+  opacity: 1;
+  z-index: 1;
+}
+/* effets speciaux */
+.card {
+  background: rgba(255, 255, 255, 0.65);
+  opacity: 1;
+  z-index: 1;
+}
+.card-img-top {
+    max-height: 250px;
+    overflow: hidden;
+}
+
+.card-title:hover {
+    color: rgb(145, 77, 255);
+    background-color: transparent;
+    text-decoration: underline;
+}
+
+dl.card-text dd {
+  display: none;
+}
+
+dl.card-text:active dd {
+  display: block;
+}
+</style>
+<body>
+<header class="sticky-top">
+    <nav class="navbar navbar-light bg-light" id="navbar">
+        <form class="container-fluid justify-content-start">
+           <a class="navbar-brand" href="#" id="logo">
+                <img src="images/chats/logo.png" alt="" height="50" 
+                     class="d-inline-block align-text-middle">
+                 Chat.io
+           </a>
+          <button class="btn btn-outline-secondary me-2" type="button">Français</button>
+          <button class="btn btn-outline-secondary me-2" type="button">English</button>
+
+          <!-- Theme buttons -->
+          <button class="btn btn-outline-secondary me-2" type="button" id="theme-btn-1" value="dark">Thème 1</button>
+          <button class="btn btn-outline-secondary me-2" type="button" id="theme-btn-2" value="light">Thème 2</button>
+
+          <!-- About page (show a cute popup, etc..)-->
+          <button class="btn btn-outline-secondary" type="button" id="about-btn">À propos</button>
+           
+          <!-- about modal -->
+          <div class="modal" id="about" tabindex="-1" aria-labelledby="aboutLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="aboutLabel">À propos de ce site...</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Ok"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="text-center">
+                    <h6 style="color:rgb(128, 50, 255)">
+                        Copyright 2023 Etienne Robillard
+                    </h6>
+                    <div style="padding: 1em; background-color:rgb(230, 214, 255); font-size:small">
+                        <p>Travail synthèse présenté à Mr. Gabriel CHARBONNEAU-RICHARD pour le cours <strong>Création et Désign de sites web.</strong>
+                        </p><p class="text-center">Cégep Saint-Jérôme, Session Hiver 2023.</p>
+                    </div>
+                  </div>
+                  <hr>
+                  <h6>Crédits:</h6>
+                  <ul style="font-size:small">
+                    <li>Images de chats: <a href="https://google.com/">Google</a></li>
+                    <li>Images d'arrière plan: <a href="https://wallpaperbetter.com">wallpaperbetter.com</a></li>
+                    <li>Maquette Chatbot: <a href="https://mdbootstrap.com/docs/standard/extended/chat/">mdbootstrap.com</a></li>
+                    <li>Développement des maquettes et plan d'inspiration: Adobe XD et Adobe Illustrator</li>
+                    <li>Traitement des images: GIMP 2.10.32</li>
+                    <li>Icônes: <a href="https://fontawesome.com">FontAwesome.com</a></li>
+                  </ul>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ok</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Profile icon of the logged user -->
+          <div class="d-flex ms-auto order-5" id="user-profile-btn">
+          <strong class="align-self-center m-1" id="username">Jack</strong><img src="images/chats/jack.png" alt="avatar" class="rounded-circle me-3 shadow-1-strong" width="60">
+          </div>
+
+        </form>
+        
+      </nav>
+</header>
+<main class="dark">
+    <section id="content">
+        <div class="container py-5">
+          <!-- section 1 : blurb text -->
+          <div class="row" id="breadcrump">
+            <!-- centered div -->
+            <div class="col-md-8 offset-md-2">
+              <div class="card">
+                <div class="card-header">
+                  <h2>Bienvenue sur <abbr>Chat.io</abbr></h2> 
+                 </div> 
+                 <div class="card-body">
+                  <p class="card-text">Un endroit génial pour discuter avec vos amis les chats.</p>
+                  <p class="text-primary"><i class="fa-solid fa-circle-info"></i> Avant de continuer, vous devez créer un compte ou vous authentifier!</p> 
+                </div>
+                <div class="card-footer text-center">
+                  <button type="button" class="btn-lg bg-primary">Connection</button>
+                  <button type="button" class="btn-lg bg-primary">Créer un compte</button>
+                </div>
+              </div>
+          </div>
+          <br>
+          <!-- section 2 -->
+          <div class="row" style="padding-top: 2em">
+      
+            <div class="col-md-6 col-lg-5 col-xl-4 mb-4 mb-md-0">
+      
+              <h5 class="font-weight-bold mb-3 text-center text-lg-start">Chats actifs (6)</h5>
+      
+              <div class="card" id="navtest">
+                <div class="card-body">
+      
+                  <ul class="list-unstyled mb-0">
+                    <li class="p-2 border-bottom">
+                      <a href="#!" class="d-flex justify-content-between">
+                        <div class="d-flex flex-row">
+                          <img src="images/chats/sergio.png" alt="avatar"
+                            class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+                          <div class="pt-1">
+                            <p class="fw-bold mb-0">Sergio</p>
+                            <p class="small text-muted">meow meow?</p>
+                          </div>
+                        </div>
+                        <div class="pt-1">
+                          <p class="small text-muted mb-1">Maintenant</p>
+                          <span class="badge bg-danger float-end">1</span>
+                        </div>
+                      </a>
+                    </li>
+                    <li class="p-2 border-bottom" data-bs-toggle="button">
+                      <a href="#!" class="d-flex justify-content-between">
+                        <div class="d-flex flex-row">
+                          <img src="images/chats/tipet.png" alt="avatar"
+                            class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+                          <div class="pt-1">
+                            <p class="fw-bold mb-0">Tipet</p>
+                            <p class="small text-muted">Meeeeeow....</p>
+                          </div>
+                        </div>
+                        <div class="pt-1">
+                          <p class="small text-muted mb-1">5 mins ago</p>
+                        </div>
+                      </a>
+                    </li>
+                    <li class="p-2 border-bottom" data-bs-toggle="button">
+                      <a href="#!" class="d-flex justify-content-between">
+                        <div class="d-flex flex-row">
+                          <img src="images/chats/jack.png" alt="avatar"
+                            class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+                          <div class="pt-1">
+                            <p class="fw-bold mb-0">Jack</p>
+                            <p class="small text-muted">Meeeow!</p>
+                          </div>
+                        </div>
+                        <div class="pt-1">
+                          <p class="small text-muted mb-1">4 days ago.</p>
+                        </div>
+                      </a>
+                    </li>
+                    <li class="p-2 border-bottom" data-bs-toggle="button">
+                      <a href="#!" class="d-flex justify-content-between">
+                        <div class="d-flex flex-row">
+                          <img src="images/chats/tigrou.png" alt="avatar"
+                            class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+                          <div class="pt-1">
+                            <p class="fw-bold mb-0">Moonlight</p>
+                            <p class="small text-muted">Meow?</p>
+                          </div>
+                        </div>
+                        <div class="pt-1">
+                          <p class="small text-muted mb-1">Hier</p>
+                        </div>
+                      </a>
+                    </li>
+                    <li class="p-2 border-bottom" data-bs-toggle="button">
+                      <a href="#!" class="d-flex justify-content-between">
+                        <div class="d-flex flex-row">
+                          <img src="images/chats/tipet.png" alt="avatar"
+                            class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+                          <div class="pt-1">
+                            <p class="fw-bold mb-0">Tipet</p>
+                            <p class="small text-muted">Meow meow.</p>
+                          </div>
+                        </div>
+                        <div class="pt-1">
+                          <p class="small text-muted mb-1">Hier</p>
+                        </div>
+                      </a>
+                    </li>
+                    <li class="p-2 border-bottom" data-bs-toggle="button">
+                      <a href="#!" class="d-flex justify-content-between">
+                        <div class="d-flex flex-row">
+                          <img src="images/chats/zoe.png" alt="avatar"
+                            class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+                          <div class="pt-1">
+                            <p class="fw-bold mb-0">Zoe</p>
+                            <p class="small text-muted">Meeeow!</p>
+                          </div>
+                        </div>
+                        <div class="pt-1">
+                          <p class="small text-muted mb-1">4 days ago</p>
+                        </div>
+                      </a>
+                    </li>
+                    <li class="p-2" data-bs-toggle="button">
+                      <a href="#!" class="d-flex justify-content-between">
+                        <div class="d-flex flex-row">
+                          <img src="images/chats/jennifer.png" alt="avatar"
+                            class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+                          <div class="pt-1">
+                            <p class="fw-bold mb-0">Jennifer</p>
+                            <p class="small text-muted">Meeeow!</p>
+                          </div>
+                        </div>
+                        <div class="pt-1">
+                          <p class="small text-muted mb-1">4 months ago</p>
+                          <span class="text-muted float-end"><i class="fas fa-check" aria-hidden="true"></i></span>
+                        </div>
+                      </a>
+                    </li>
+                  </ul>
+      
+                </div>
+              </div>
+      
+            </div>
+      
+            <div class="col-md-6 col-lg-7 col-xl-8" id="updateme">
+      
+              <ul class="list-unstyled">
+                <li class="d-flex justify-content-between mb-4">
+                  <img src="images/chats/zoe.png" alt="avatar"
+                    class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">
+                  <div class="card">
+                    <div class="card-header d-flex justify-content-between p-3">
+                      <p class="fw-bold mb-0">Zoe</p>
+                      <p class="text-muted small mb-0"><i class="far fa-clock"></i> 4 days ago</p>
+                    </div>
+                    <div class="card-body">
+                      <p class="mb-0">
+                        Meeeow!
+                      </p>
+                    </div>
+                  </div>
+                </li>
+                <li class="d-flex justify-content-between mb-4">
+                  <div class="card w-100">
+                    <div class="card-header d-flex justify-content-between p-3">
+                      <p class="fw-bold mb-0">Jack</p>
+                      <p class="text-muted small mb-0"><i class="far fa-clock"></i> 4 days ago</p>
+                    </div>
+                    <div class="card-body">
+                      <p class="mb-0">
+                        Meeeow!
+                      </p>
+                    </div>
+                  </div>
+                  <img src="images/chats/jack.png" alt="avatar"
+                    class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
+                </li>
+                <li class="d-flex justify-content-between mb-4">
+                  <img src="images/chats/sergio.png" alt="avatar"
+                    class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">
+                  <div class="card">
+                    <div class="card-header d-flex justify-content-between p-3">
+                      <p class="fw-bold mb-0">Sergio</p>
+                      <p class="text-muted small mb-0"><i class="far fa-clock"></i> Right now!</p>
+                    </div>
+                    <div class="card-body">
+                      <p class="mb-0">
+                        meow meow?
+                      </p>
+                    </div>
+                  </div>
+                </li>
+                <li class="bg-white mb-3">
+                  <div class="form-outline">
+                    <textarea class="form-control" id="textAreaExample2" rows="4" placeholder="Que se passe t'il?"></textarea>
+                
+                  </div>
+                </li>
+                <button type="button" class="btn btn-secondary btn-lg btn-rounded float-end">Soumettre</button>
+              </ul>
+      
+            </div>
+      
+          </div>
+          <!-- section 3 -->
+          <div class="row" id="about" style="padding-top: 5em">
+            <div class="col-12">
+              <h5 class="mb-3">Amis (3)</h5>
+            </div>
+            <div class="col-md-auto">
+              
+              <div class="card my-3 h-100" style="width: 200px">
+                <img src="images/chats/sergio.png" alt="" height="200">
+                <div class="card-body">
+                  <div class="card-title">Sergio</div>
+                
+                  <dl class="card-text">
+                    <dd>Âge: 1 an</dd>
+                    <dd>Sexe: mâle</dd>
+                    
+                  </dl>    
+                </div>
+              </div>
+            </div>
+            <div class="col-md-auto">
+              <div class="card my-3 h-100" style="width: 200px">
+                <img src="images/chats/tipet.png" alt="" height="200">                
+                <div class="card-body">
+                  <div class="card-title">Tipet</div>
+                
+                  <dl class="card-text">
+                    <dd>Âge 13 ans</dd>
+                    <dd>Sexe: mâle</dd>    
+                </div>
+              </div>
+            </div>
+            <div class="col-md-auto">
+              <div class="card my-3 h-100" style="width: 200px">
+                <img src="images/chats/tigrou.png" alt="" height="200">
+                <div class="card-body">
+                  <div class="card-title">Moonlight</div>
+                
+                  <dl class="card-text">
+                    <dd>Âge 9 ans</dd>
+                    <dd>Sexe: mâle</dd>    
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      
+        </div>
+      </section>
+
+
+</main>
+<footer class="text-center text-white bg-gradient" style="background-color: #000;">
+<!-- Grid container -->
+<div class="container pt-4">
+
+<!-- Section: Social media -->
+<section class="mb-4">
+
+<!-- Facebook Inc. -->
+<a href="https://facebook.com/" alt=""><i class="fab fa-facebook-square fa-2x text-light m-3"></i></a>
+
+<!-- GitHub Inc. -->
+<a href="https://github.com/JackBortoneLab"><i class="fab fa-github fa-2x text-light m-3"></i></a>
+
+<!-- Soundcloud Inc. -->
+<a href="https://soundcloud.com/wise_project"><i class="fab fa-soundcloud fa-2x text-light m-3"></i></a>
+
+</section>
+
+
+<!-- Copyright... -->
+<div class="text-center text-secondary p-3">
+    <p>© 2023 <abbr>Etienne Robillard</abbr>
+    <!-- Creative Commons License -->
+    <a href="https://creativecommons.org/licenses/by-sa/4.0/"><i class="fab fa-creative-commons text-secondary m-3"></i></a>
+    <a href="mailto:9967819@cstj.qc.ca?Subject=Well played !!" target="_blank"><i class="fa-solid fa-square-envelope text-secondary"></i></a>
+    </p>
+</div>
+</div>
+</footer>
+<!-- FontAwesome and Bootstrap code... -->
+<script src="https://kit.fontawesome.com/7d5893ad77.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
+<script>
+// Animation du background des avatars et transformation de la page en fonction
+// de l'avatar sélectionné.
+const parentElement = document.getElementById('changeme') ;
+const clickHandlers = document.getElementsByClassName('p-2');
+const element = document.querySelector('main');
+//let currentTheme = element.style.colorScheme;
+const themeBtnDark = document.getElementById('theme-btn-1');
+const themeBtnLight = document.getElementById('theme-btn-2');
+const navBar = document.getElementById('navbar');
+const logoElement = document.getElementById('logo');
+const username = document.getElementById('username');
+const aboutbtn = document.getElementById('about-btn');
+
+Array.from(clickHandlers).forEach(function(element){
+    element.addEventListener('click', function(e){
+        //this.style.backgroundColor = "#eee";
+        e.preventDefault();
+        this.classList.toggle('active') ;
+        this.setAttribute('aria-pressed', "true");
+
+        return false;
+    });
+});
+
+
+themeBtnDark.addEventListener('click', function(event){
+  // dynamically change the background image of the main element and
+  // toggle theme to dark or light mode. 2. replace button label text with current theme .
+  //event.preventDefault();
+  element.classList.replace('light', 'dark')
+
+  element.setAttribute('aria-pressed', true );
+  //this.classList.toggle('active');
+  navBar.classList.add('bg-dark');
+  navBar.classList.remove('bg-white');
+  logoElement.classList.toggle('text-white');
+  username.classList.toggle('text-white');
+  return false;
+});
+
+themeBtnLight.addEventListener('click', function(event){
+  element.classList.replace('dark', 'light');
+  element.setAttribute('aria-pressed', true );
+  //this.classList.toggle('active');
+  navBar.classList.add('bg-white');
+  navBar.classList.remove('bg-dark');
+  logoElement.classList.toggle('text-white');
+  username.classList.toggle('text-white');
+  return false;
+});
+
+/* special fx time :D */
+/*const dls = document.getElementsByClassName('card-title');
+Array.from(dls).forEach(function(element){
+  element.addEventListener('click', function(e){
+      
+  });
+}); */
+const modalPopup = new bootstrap.Modal(document.getElementById('about'), {backdrop: false});
+aboutbtn.addEventListener('click', function(e){
+  // show popup : credits and license info 
+  modalPopup.toggle();
+  
+});
+
+
+</script>
+</body>
+</html>
